@@ -1,31 +1,35 @@
-import React from 'react';
-import {
-  Platform,StyleSheet
-} from 'react-native';
+import React, { Component } from 'react';
 
-import { Router, Scene } from 'react-native-router-flux';
-import Home from './Movies';
+
+import {
+  Navigator,
+} from 'react-native-deprecated-custom-components';
+import Movies from './Movies';
 import Confirmation from './Confirmation';
 
+const RouteMapper = (route, navigator) => {
+  if (route.name === 'movies') {
+    return (
+      <Movies navigator={navigator} />
+    );
+  } else if (route.name === 'confirmation') {
+    return (
+      <Confirmation code={route.code} navigator={navigator} />
+    );
+  }
+};
 
-
-
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
     return (
-      <Router>
-        <Scene key='root' style={{paddingTop: Platform.OS === 'ios' ? 64 : 54}}>
-          <Scene key='home'   component={Home}  hideNavBar style={styles.title} />
-          <Scene key='confirmation'   component={Confirmation}  />
-
-        </Scene>
-      </Router>
+      <Navigator
+        // Default to movies route
+        initialRoute={{ name: 'movies' }}
+        // Use FloatFromBottom transition between screens
+        configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
+        // Pass a route mapper functions
+        renderScene={RouteMapper}
+      />
     );
   }
 }
-const styles = StyleSheet.create({
-title: {
-    alignSelf:'center'
-  },
-
-});

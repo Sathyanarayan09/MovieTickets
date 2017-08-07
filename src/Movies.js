@@ -49,7 +49,12 @@ export default class Movies extends Component {
     } else {
       // Close popup
       this.closeMovie();
-     
+      // Navigate away to Confirmation route
+      this.props.navigator.push({
+        name: 'confirmation',
+        // Generate random string
+        code: Math.random().toString(36).substring(6).toUpperCase(),
+      });
     }
   }
   
